@@ -1,1 +1,0 @@
-### Todo app showcasing Devops Capablities
