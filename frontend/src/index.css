@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Additional global reset / root styles */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Inter', sans-serif; /* optional, nice clean font */
+  background-color: black; /* Tailwind gray-100 for body bg */
+}
+
+* {
+  box-sizing: border-box;
+}
