@@ -45,3 +45,6 @@ temp/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+.terraform/
+.terraform.lock.hcl
