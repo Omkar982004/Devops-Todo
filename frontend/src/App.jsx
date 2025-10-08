@@ -6,7 +6,7 @@ export default function App() {
 
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const API_URL = import.meta.env.VITE_API_URL; // ✅ get from env
+  const API_URL = import.meta.env.VITE_API_URL || 'api'; // ✅ get from env
   console.log(API_URL);
 
   useEffect(()=>{

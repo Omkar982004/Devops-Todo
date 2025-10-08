@@ -1,0 +1,67 @@
+name: Build and Deploy to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ACR_NAME: todotfappacr
+  RESOURCE_GROUP: todoapp-tf-rg
+  BACKEND_APP: todo-backend
+  FRONTEND_APP: todo-frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Log in to Azure using Service Principal
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Log in to ACR
+      - name: Log in to Azure Container Registry
+        run: az acr login --name $ACR_NAME
+
+      # Build backend Docker image
+      - name: Build backend image
+        run: |
+          docker build -t $ACR_NAME.azurecr.io/backend:latest ./Backend
+
+      # Push backend image to ACR
+      - name: Push backend image
+        run: |
+          docker push $ACR_NAME.azurecr.io/backend:latest
+
+      # Build frontend Docker image
+      - name: Build frontend image
+        run: |
+          docker build -t $ACR_NAME.azurecr.io/frontend:latest ./frontend
+
+      # Push frontend image to ACR
+      - name: Push frontend image
+        run: |
+          docker push $ACR_NAME.azurecr.io/frontend:latest
+
+      # # Update backend container app
+      # - name: Deploy backend
+      #   run: |
+      #     az containerapp update \
+      #       --name $BACKEND_APP \
+      #       --resource-group $RESOURCE_GROUP \
+      #       --image $ACR_NAME.azurecr.io/backend:latest
+
+      # # Update frontend container app
+      # - name: Deploy frontend
+      #   run: |
+      #     az containerapp update \
+      #       --name $FRONTEND_APP \
+      #       --resource-group $RESOURCE_GROUP \
+            # --image $ACR_NAME.azurecr.io/frontend:latest
